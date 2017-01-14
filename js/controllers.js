@@ -23,10 +23,10 @@ function ($scope, $stateParams,$Global) {
 
 }])
    
-.controller('gastosGamecoCtrl', ['$scope', '$stateParams', '$ionicPopup', 'Login', '$Global', '$state', '$ionicPopup',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('gastosGamecoCtrl', ['$scope', '$stateParams', '$ionicPopup', 'Login', '$Global', '$state', '$ionicPopup', 'Login', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams,$ionicPopup, Login, $Global, $state, $ionicPopup) {
+function ($scope, $stateParams,$ionicPopup, Login, $Global, $state, $ionicPopup, Login) {
    $scope.Entrar = function(){
    	//eligio_arreola@hotmail.com
      if(!$scope.login){
@@ -37,15 +37,8 @@ function ($scope, $stateParams,$ionicPopup, Login, $Global, $state, $ionicPopup)
                      });
 
         }else{ 
-    		var settings ={	
-    			  "url": "http://gamecotools.com.mx/api/auth_login",
-    			  "method": "POST",
-    			  "data": {
-    			    "email": $scope.login.email,
-    			    "password": $scope.login.password
-    			  }
-    		  }
-    		$.ajax(settings).done(function (response) {
+    	
+    		Login.Entrar( $scope.login.email,$scope.login.password ).success(function (response) {
           //console.log(response);
     		   if (response['token']) {
                    $Global.token = response['token']['token'];
@@ -64,10 +57,10 @@ function ($scope, $stateParams,$ionicPopup, Login, $Global, $state, $ionicPopup)
 
 }])
    
-.controller('gastoCtrl', ['$scope', '$stateParams', 'MostrarType', 'GuardarGasto', '$Global', '$ionicPopup', 'Login', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('gastoCtrl', ['$scope', '$stateParams', 'MostrarType', 'GuardarGasto', '$Global', '$ionicPopup', 'GuardarGasto', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, MostrarType, GuardarGasto, $Global, $ionicPopup,Login) {
+function ($scope, $stateParams, MostrarType, GuardarGasto, $Global, $ionicPopup,GuardarGasto) {
     // console.log($Global.token);
      MostrarType.mostrar().success(function(data,status,headers,config){
      	$scope.tipos = data;
@@ -123,7 +116,7 @@ function ($scope, $stateParams, MostrarType, GuardarGasto, $Global, $ionicPopup,
         }
         if($scope.bandera){
          
-          Login.Entrar($Global.id, $scope.tipo, cantidad, $Global.token ).success(function (response) {
+          GuardarGasto.agregar($Global.id, $scope.tipo, cantidad, $Global.token ).success(function (response) {
             if(response=='true'){
               var alertPopup = $ionicPopup.alert({
                          title: 'Gasto',

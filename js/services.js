@@ -18,15 +18,7 @@ angular.module('app.services', [])
 
 .factory('GuardarGasto', ['$http', function($http){
 	return {
-		agregar : function(){
-		return $http.post('http://gameco.dev/api/gasto');
-		}
-	}
-}])
-
-.factory('Login', ['$http', function($http){
-	return {	
-		Entrar : function(id,tipo,cantidad,token){
+		agregar :function(id,tipo,cantidad,token){
 	          var settings ={ 
               "url": "http://gamecotools.com.mx/api/gastos",
               "method": "POST",
@@ -38,6 +30,16 @@ angular.module('app.services', [])
               }
             }
            return $http.post(settings);
+		}
+	}
+}])
+
+.factory('Login', ['$http', function($http){
+	return {	
+		Entrar : function(email,contra){
+	      
+           return $http.post("http://gamecotools.com.mx/api/auth_login",{'email': email,'password': contra});
+          
 		}
 
 	}
