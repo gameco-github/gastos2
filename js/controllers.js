@@ -46,7 +46,7 @@ function ($scope, $stateParams,$ionicPopup, Login, $Global, $state, $ionicPopup)
     			  }
     		  }
     		$.ajax(settings).done(function (response) {
-          console.log(response);
+          //console.log(response);
     		   if (response['token']) {
                    $Global.token = response['token']['token'];
                    $Global.id = response['id']['id'];
@@ -64,11 +64,11 @@ function ($scope, $stateParams,$ionicPopup, Login, $Global, $state, $ionicPopup)
 
 }])
    
-.controller('gastoCtrl', ['$scope', '$stateParams', 'MostrarType', 'GuardarGasto', '$Global', '$ionicPopup', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('gastoCtrl', ['$scope', '$stateParams', 'MostrarType', 'GuardarGasto', '$Global', '$ionicPopup', 'Login', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, MostrarType, GuardarGasto, $Global, $ionicPopup) {
-     console.log($Global.token);
+function ($scope, $stateParams, MostrarType, GuardarGasto, $Global, $ionicPopup,Login) {
+    // console.log($Global.token);
      MostrarType.mostrar().success(function(data,status,headers,config){
      	$scope.tipos = data;
      })
@@ -122,17 +122,8 @@ function ($scope, $stateParams, MostrarType, GuardarGasto, $Global, $ionicPopup)
           }
         }
         if($scope.bandera){
-          var settings ={ 
-              "url": "http://gamecotools.com.mx/api/gastos",
-              "method": "POST",
-              "data": {
-                "id": $Global.id,
-                "tipo": $scope.tipo,
-                "cantidad": cantidad,
-                "_token": $Global.token
-              }
-            }
-          $.ajax(settings).done(function (response) {
+         
+          Login.Entrar($Global.id, $scope.tipo, cantidad, $Global.token ).success(function (response) {
             if(response=='true'){
               var alertPopup = $ionicPopup.alert({
                          title: 'Gasto',
